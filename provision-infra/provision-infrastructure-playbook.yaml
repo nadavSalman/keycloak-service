@@ -1,0 +1,5 @@
+- name: Preper K8s Infrastructure 
+  become: true 
+  hosts: dev
+  roles:
+     - Install-Docker

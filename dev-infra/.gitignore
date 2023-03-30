@@ -40,3 +40,9 @@ terraform.rc
 main.t
 
 main.tfplan
+
+
+
+
+
+*.key
