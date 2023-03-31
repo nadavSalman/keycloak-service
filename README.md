@@ -24,46 +24,63 @@
 4. We want to introduce and enforce a new password creation policy for all existing realms, how should we do it? you don’t have to
 implement this step, but please provide your suggested design.
 
+
+### DOD 
+As a user I would like to run keycloak locally with ease, and be able to create new realms with ease, without having to log into the keycloak admin
+panel.
+
+
 ---
 
-The requested image to use for keycloak is based on linux/amd64 (I will fail to run on Apple Silicon Macs). For that reason, I created a dev infra with Terraform that creates an ubuntu 22_04-lts on Azur
+The requested image to use for keycloak is based on linux/amd64 (I will fail to run on Apple Silicon Macs). For that reason, I created a dev infra with Terraform that creates an ubuntu 22_04-lts on Azure.
 
 ### Prerequisites    
-* You must have Docker installed on your system.
-   I have  provisioned my infrastructure to include docker using Ansible check it out under provision-infra:
+* You must have Docker installed on your system for the delivery to run locally.
+   I have  provisioned my infrastructure to include Docker using Ansible check it out under provision-infra:
    ```
       .
-      ├── README.md
-      ├── dev-infra
       ├── provision-infra
-      └── run-local.sh
+      │   ├── Install-Docker
+      │   ├── Install-Docker-Compose
+      │   ├── inventory.yaml
+      │   ├── provision-infra.sh
+      │   └── provision-infrastructure-playbook.yaml
    ```
-* Make sure your system have the container image : `jboss/keycloak:16.1.1`
+* Make sure your system have the container image : `jboss/keycloak:16.1.1` by pulling the image or it will be pulled when running the  command
    ```
    docker pull jboss/keycloak:16.1.1
    ```
 
 
+
+### Runtime configuration
+
+
 The version `jboss/keycloak:16.1.1`  must run with HTTPS over port 8443, otherwise the `Administration Console` wount be accessible. 
-Acording to the imagfe doc at [Docker Hub / keycloack ](https://hub.docker.com/r/jboss/keycloak)  can run securly by mount `tls.crt` `tls.key` 
+Acording to the image doc at Docker Hub [jboss/keycloak ](https://hub.docker.com/r/jboss/keycloak)  can run securly by mount `tls.crt` `tls.key` 
 file to the path : `/etc/x509/https` inside the container.
 I created a self-singed certificets placed unde certificates dir.
-If you would lke ti generate apair yourlef run :
+
+If you would like to generate the pair yourself run :
 ``` 
 openssl req -newkey rsa:2048 -nodes \
   -keyout tls.key -x509 -days 3650 -out tls.crt
 ```
-```
-docker run   \
-    --name keycloak -d  \
-    -p 8443:8443 \
-    -e ROOT_LOGLEVEL=DEBUG \
-    -e KEYCLOAK_USER=admin \
-    -e KEYCLOAK_PASSWORD=Q1w2e3r4t5y6 \
-    -v /home/devops/cets:/etc/x509/https \
-    jboss/keycloak:16.1.1
 
-```
+
+Data persistency - By default, Keycloak is using its embedded H2 database. The default database is located in /opt/jboss/keycloak/standalone/data/ the name is keycloak.mv.db
+At runtime a volume map correspondly : ```./h2-data/:/opt/jboss/keycloak/standalone/data/```
+
+
+
+
+
+
+
+An http service develope using Python Flask.
+*  create a realm in keycloak
+
+
 
 
 
