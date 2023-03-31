@@ -1,0 +1,14 @@
+---
+# tasks file for Install-Docker-Compose
+- name: Download the 1.29.2 release
+  shell: |
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+- name: Correct permissions so that the docker-compose command is executable
+  shell: |
+    sudo chmod +x /usr/local/bin/docker-compose
+
+
+- name: Correct permissions so that the docker-compose command is executable
+  shell: |
+    docker-compose --version
