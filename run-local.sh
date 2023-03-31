@@ -13,13 +13,24 @@
 
 # By default there is no admin user created so you won't be able to login to the admin console. 
 # To create an admin account you need to use environment variables to pass in an initial username and password.
-CONTAINER_ID=$(docker run   --platform=linux/amd64 --name keycloak -d  -p 8080:8080 -e ROOT_LOGLEVEL=DEBUG jboss/keycloak:16.1.1 )
+CONTAINER_ID=$(docker run   --platform=linux/amd64 --name keycloak -d  -p 8080:8080 -e ROOT_LOGLEVEL=DEBUG -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=Q1w2e3r4t5y6 jboss/keycloak:16.1.1 )
 echo "CONTAINER_ID -> $CONTAINER_ID"
 
 
 
 
 
+docker run   \
+    --name keycloak -d  \
+    -p 8443:8443 \
+    -e ROOT_LOGLEVEL=DEBUG \
+    -e KEYCLOAK_USER=admin \
+    -e KEYCLOAK_PASSWORD=Q1w2e3r4t5y6 \
+    -v /home/devops/cets:/etc/x509/https \
+    jboss/keycloak:16.1.1
+
+
+docker exec -it keycloak bash
 #CONTAINER_ID=$(docker run   --platform=linux/amd64 --name keycloak -d  -p 8080:8080 -e KEYCLOAK_USER=nadav -e  KEYCLOAK_PASSWORD=123456 -e ROOT_LOGLEVEL=DEBUG jboss/keycloak:16.1.1 )
 
 

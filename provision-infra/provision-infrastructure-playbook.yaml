@@ -1,4 +1,4 @@
-- name: Preper K8s Infrastructure 
+- name: Preper Development VM
   become: true 
   hosts: dev
   roles:

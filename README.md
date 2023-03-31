@@ -28,18 +28,42 @@ implement this step, but please provide your suggested design.
 
 The requested image to use for keycloak is based on linux/amd64 (I will fail to run on Apple Silicon Macs). For that reason, I created a dev infra with Terraform that creates an ubuntu 22_04-lts on Azur
 
-### Prerequisites
+### Prerequisites    
 * You must have Docker installed on your system.
    I have  provisioned my infrastructure to include docker using Ansible check it out under provision-infra:
-```
-   .
-   ├── README.md
-   ├── dev-infra
-   ├── provision-infra
-   └── run-local.sh
-```
+   ```
+      .
+      ├── README.md
+      ├── dev-infra
+      ├── provision-infra
+      └── run-local.sh
+   ```
+* Make sure your system have the container image : `jboss/keycloak:16.1.1`
+   ```
+   docker pull jboss/keycloak:16.1.1
+   ```
 
 
+The version `jboss/keycloak:16.1.1`  must run with HTTPS over port 8443, otherwise the `Administration Console` wount be accessible. 
+Acording to the imagfe doc at [Docker Hub / keycloack ](https://hub.docker.com/r/jboss/keycloak)  can run securly by mount `tls.crt` `tls.key` 
+file to the path : `/etc/x509/https` inside the container.
+I created a self-singed certificets placed unde certificates dir.
+If you would lke ti generate apair yourlef run :
+``` 
+openssl req -newkey rsa:2048 -nodes \
+  -keyout tls.key -x509 -days 3650 -out tls.crt
+```
+```
+docker run   \
+    --name keycloak -d  \
+    -p 8443:8443 \
+    -e ROOT_LOGLEVEL=DEBUG \
+    -e KEYCLOAK_USER=admin \
+    -e KEYCLOAK_PASSWORD=Q1w2e3r4t5y6 \
+    -v /home/devops/cets:/etc/x509/https \
+    jboss/keycloak:16.1.1
+
+```
 
 
 
