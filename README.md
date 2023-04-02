@@ -81,9 +81,41 @@ An http service develope using Python Flask.
 *  create a realm in keycloak
 
 
+### Add new Realms
 
 
+Pay load structure :
+```
+[    
+    {"name": "QA"},
+    {"name": "Staging"}
+]
+```
 
+```
+$ curl --location 'http://localhost:5000/api/create' --header 'Content-Type: application/json' --data '[    
+    {"name": "QA"},
+    {"name": "Staging"}
+]'
+['Realm QA created successfully!', 'Realm Staging created successfully!'] 
+$
+```
+
+Sen a request with realm nat a valin subdomain for the realm name :
+
+```
+$ curl --location 'http://localhost:5000/api/create' --header 'Content-Type: application/json' --data '[    
+    {"name": "@#$google"}
+]'
+{
+  "0": {
+    "name": [
+      "A subdomain should contain only letters, numbers, and dashes."
+    ]
+  }
+}
+$
+```
 
 
 

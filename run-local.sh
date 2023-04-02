@@ -25,22 +25,6 @@ function containers_clean_up() {
 case "$1" in
     "run")
         run
-
-        # white for the keykloac service to be alive.
-        while true; do
-        response=$(curl  --head -fsS --insecure  https://localhost:8443/)
-        status=$(echo "$response" | grep -i "HTTP/1.1" | awk '{print $2}')
-        
-        if [[ "$status" == "200" ]]; then
-            echo "Server is ready"
-            break
-        else
-            echo "Server is not ready (HTTP status code $status)"
-            sleep 5
-        fi
-        done
-
-
         ;;
 
 
