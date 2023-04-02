@@ -35,7 +35,7 @@ panel.
 The requested image to use for keycloak is based on linux/amd64 (I will fail to run on Apple Silicon Macs). For that reason, I created a dev infra with Terraform that creates an ubuntu 22_04-lts on Azure.
 
 ### Prerequisites    
-* You must have Docker installed on your system for the delivery to run locally.
+* You must have Docker & Python (3.9 +) installed on your system for the delivery to run locally.
    I have  provisioned my infrastructure to include Docker using Ansible check it out under provision-infra:
    ```
       .
