@@ -19,15 +19,29 @@ function containers_clean_up() {
     docker rm $(docker stop $(docker ps -aq))
 }
 
-
+export KEYCLOACK_SERVER_IP='localhost'
 
 # Check the parameter value and execute the corresponding function
 case "$1" in
     "run")
         run
+        while true
+        do
+            status_code=$(curl -I --insecure https://localhost:8443 | grep -Fi HTTP | awk '{print $2}')
+
+            if [ "$status_code" -eq 200 ]; then
+                echo "Keycloack Server is Up!"
+                break
+            else
+                echo "Status code is not 200, retrying in 5 seconds"
+                sleep 5
+            fi
+        done
+        cd service 
+        pip3 install -r requirements.txt
+        ./bootstrap.sh 
+        
         ;;
-
-
 
     "clean")
         containers_clean_up

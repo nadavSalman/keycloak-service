@@ -2,9 +2,9 @@ from flask import Blueprint, jsonify, request, abort
 from keycloak import KeycloakAdmin
 from service.model.realm import Realm, RealmSchema
 from marshmallow import ValidationError
+import os
 
-
-keycloak_admin = KeycloakAdmin(server_url="https://172.174.72.74:8443/auth/",
+keycloak_admin = KeycloakAdmin(server_url=f"https://{os.getenv('KEYCLOACK_SERVER_IP')}:8443/auth/",
                                username="admin",
                                password="Q1w2e3r4t5y6",
                                realm_name="master",
