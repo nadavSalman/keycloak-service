@@ -197,6 +197,11 @@ You should pass one of the two param to the script :
  * clean (remove any docker container on the host)
 
 
+ ```
+$ ./run-local.sh  run 
+ ```
+
+
 
 
 
