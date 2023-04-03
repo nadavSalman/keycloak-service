@@ -106,7 +106,7 @@ service/
 
 
 ### create a realm in KeyCloak
-I decided to implement the HTTP `python-keycloak` a package providing access to the Keycloak API.
+I decided to implement the HTTP service using `python-keycloak` a package providing access to the Keycloak API.
 Initially, I thought to implement a direct call to the rest API and even implemented a method to get an admin access token.
 
 Eventually, I when with the client library to keep the code cleaner, with the price of fewer generics operations.
@@ -306,7 +306,5 @@ The i can use update_realm funciton to set a new password policy.
   In the image below you can see how the command above updates the Realn ‘nadav’ to include our password policy.
   ![My Image](./images/realm_set_policy.png)
 
-  I
-
-
+  Then wrap it all inside a PUT method.
 
